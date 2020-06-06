@@ -26,7 +26,7 @@ public class MybatisConfiguration {
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setBasePackage("com.sy.trickapp.biz.fetch.dao");
+        mapperScannerConfigurer.setBasePackage("com.mt.dao");
         return mapperScannerConfigurer;
     }
 }
