@@ -6,4 +6,5 @@ package com.mt.service;
  */
 public interface StoreDataService {
 
+    void getStoreData(String keyword);
 }

@@ -13,7 +13,9 @@ server:
 
 
 
-apiUrl: https://apimobile.meituan.com/group/v4/poi/pcsearch/96?
+apiUrl: https://apimobile.meituan.com/group/v4/poi/pcsearch/
+cityId: 96
+refererUrl: https://jn.meituan.com/
 
 
 ### https://apimobile.meituan.com/group/v4/poi/pcsearch/96?uuid=dab4577b0f964ebea181.1591278152.1.0.0&userid=-1&limit=64&offset=0&q=%25E7%25BE%258E%25E9%25A3%259F&Referer=https://jn.meituan.com/%25E7%25BE%258E%25E9%25A3%259F

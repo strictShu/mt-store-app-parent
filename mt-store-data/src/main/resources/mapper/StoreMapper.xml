@@ -14,7 +14,7 @@
     <result column="comments" jdbcType="INTEGER" property="comments" />
     <result column="backCateName" jdbcType="VARCHAR" property="backcatename" />
     <result column="store_id" jdbcType="INTEGER" property="storeId" />
-    <result column="avg_price" jdbcType="INTEGER" property="avgPrice" />
+    <result column="avg_price" jdbcType="DOUBLE" property="avgPrice" />
     <result column="source_key" jdbcType="VARCHAR" property="sourceKey" />
     <result column="source_data" jdbcType="VARCHAR" property="sourceData" />
     <result column="creat_time" jdbcType="TIMESTAMP" property="creatTime" />
@@ -25,19 +25,16 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.mt.entity.Store">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.String">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
-    insert into store (title, phone, city, 
+    insert into store (id,title, phone, city,
       address, areaname, latitude, 
       longitude, avg_score, comments, 
       backCateName, store_id, avg_price, 
       source_key, source_data, creat_time, 
       update_time)
-    values (#{title,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
       #{address,jdbcType=VARCHAR}, #{areaname,jdbcType=VARCHAR}, #{latitude,jdbcType=DOUBLE}, 
       #{longitude,jdbcType=DOUBLE}, #{avgScore,jdbcType=DOUBLE}, #{comments,jdbcType=INTEGER}, 
-      #{backcatename,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER}, #{avgPrice,jdbcType=INTEGER}, 
+      #{backcatename,jdbcType=VARCHAR}, #{storeId,jdbcType=INTEGER}, #{avgPrice,jdbcType=DOUBLE}, 
       #{sourceKey,jdbcType=VARCHAR}, #{sourceData,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -54,7 +51,7 @@
       comments = #{comments,jdbcType=INTEGER},
       backCateName = #{backcatename,jdbcType=VARCHAR},
       store_id = #{storeId,jdbcType=INTEGER},
-      avg_price = #{avgPrice,jdbcType=INTEGER},
+      avg_price = #{avgPrice,jdbcType=DOUBLE},
       source_key = #{sourceKey,jdbcType=VARCHAR},
       source_data = #{sourceData,jdbcType=VARCHAR},
       creat_time = #{creatTime,jdbcType=TIMESTAMP},

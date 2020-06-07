@@ -18,6 +18,7 @@ public class MeiTuanData {
     private String code;
     private DataEntity data;
 
+    @Data
     public class DataEntity {
         /**
          * template : pcfood
@@ -113,6 +114,7 @@ public class MeiTuanData {
             private String backCateName;
             private String recentScreen;
             private boolean full;
+
             @Data
             public class AbstractsEntity {
                 /**
@@ -131,6 +133,7 @@ public class MeiTuanData {
                 private String fontColor;
 
             }
+
             @Data
             public class DealsEntity {
                 /**
@@ -160,102 +163,7 @@ public class MeiTuanData {
                 private double value;
                 private double sales;
 
-                public void setSubtitleB(String subtitleB) {
-                    this.subtitleB = subtitleB;
-                }
-
-                public void setSubtitleC(String subtitleC) {
-                    this.subtitleC = subtitleC;
-                }
-
-                public void setTrace(String trace) {
-                    this.trace = trace;
-                }
-
-                public void setSubtitleA(String subtitleA) {
-                    this.subtitleA = subtitleA;
-                }
-
-                public void setPrice(double price) {
-                    this.price = price;
-                }
-
-                public void setIUrl(String iUrl) {
-                    this.iUrl = iUrl;
-                }
-
-                public void setStid(String stid) {
-                    this.stid = stid;
-                }
-
-                public void setId(int id) {
-                    this.id = id;
-                }
-
-                public void setTag(TagEntity tag) {
-                    this.tag = tag;
-                }
-
-                public void setTitle(String title) {
-                    this.title = title;
-                }
-
-                public void setValue(double value) {
-                    this.value = value;
-                }
-
-                public void setSales(double sales) {
-                    this.sales = sales;
-                }
-
-                public String getSubtitleB() {
-                    return subtitleB;
-                }
-
-                public String getSubtitleC() {
-                    return subtitleC;
-                }
-
-                public String getTrace() {
-                    return trace;
-                }
-
-                public String getSubtitleA() {
-                    return subtitleA;
-                }
-
-                public double getPrice() {
-                    return price;
-                }
-
-                public String getIUrl() {
-                    return iUrl;
-                }
-
-                public String getStid() {
-                    return stid;
-                }
-
-                public int getId() {
-                    return id;
-                }
-
-                public TagEntity getTag() {
-                    return tag;
-                }
-
-                public String getTitle() {
-                    return title;
-                }
-
-                public double getValue() {
-                    return value;
-                }
-
-                public double getSales() {
-                    return sales;
-                }
-
+                @Data
                 public class TagEntity {
                     /**
                      * promotion : []
@@ -272,6 +180,7 @@ public class MeiTuanData {
                 }
             }
         }
+
         @Data
         public class ServerInfoEntity {
             /**
@@ -285,6 +194,7 @@ public class MeiTuanData {
             private String globalId;
             private String queryId;
         }
+
         @Data
         public class CardExtensionEntity {
             /**
