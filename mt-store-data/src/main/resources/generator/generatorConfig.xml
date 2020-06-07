@@ -8,7 +8,7 @@
     <properties resource="generator/config.properties"/>
 
     <classPathEntry
-            location="/Users/hu/.m2/repository/mysql/mysql-connector-java/5.1.37/mysql-connector-java-5.1.37.jar"/>
+            location="C:\Users\Administrator\.m2\repository\mysql\mysql-connector-java\5.1.37\mysql-connector-java-5.1.37.jar"/>
 
     <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
         <property name="beginningDelimiter" value="`"/>
@@ -48,7 +48,7 @@
                              type="XMLMAPPER"/>
 
 
-        <table tableName="mt_test"  domainObjectName="Test" enableCountByExample="false"
+        <table tableName="store"  domainObjectName="Store" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
