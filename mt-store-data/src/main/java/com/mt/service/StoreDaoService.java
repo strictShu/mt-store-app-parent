@@ -1,4 +1,4 @@
-package com.mt.service.impl;
+package com.mt.service;
 
 import com.mt.dao.StoreMapper;
 import com.mt.entity.Store;

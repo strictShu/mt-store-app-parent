@@ -1,3 +1,11 @@
 GET 127.0.0.1:9999/open/save
 
 ###
+
+GET 127.0.0.1:9999/open/data/task
+
+###
+
+GET 127.0.0.1:9999/open/data/proxy
+
+###

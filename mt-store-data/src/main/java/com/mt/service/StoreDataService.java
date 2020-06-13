@@ -7,4 +7,7 @@ package com.mt.service;
 public interface StoreDataService {
 
     void getStoreData(String keyword);
+
+    void taskProcess(String keyword, int limit, int offset, String areaId);
+
 }

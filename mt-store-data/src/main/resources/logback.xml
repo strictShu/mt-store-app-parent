@@ -1,0 +1,221 @@
+<configuration>
+    <property name="LOG_DIR" value="/home/mt/log/gag-vaccine-batch-task/"/>
+    <property name="REP_DIR" value="/home/mt/log/gag-vaccine-batch-task/replicate"/>
+    <timestamp key="bySecond" datePattern="yyyy-MM-dd/HH-mm-ss"/>
+    <property name="maxFileSize" value="30"/>
+    <property name="fileSizeUnit" value="mb"/>
+    <property name="maxIndex" value="20"/>
+    <property name="ROCKET_MQ_LEVEL" value="INFO"/>
+
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/common_log.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/common_log.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="SYSTEM_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/system_log.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/system_log.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="system" level="INFO">
+        <appender-ref ref="SYSTEM_FILE"/>
+    </logger>
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+
+    <!-- rocketmq log -->
+    <appender name="RocketmqClientAppender"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/rocketmq_client.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/rocketmq_client.%i.log.zip
+            </fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%d{yyy-MM-dd HH:mm:ss,GMT+8} %p %t - %m%n</pattern>
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
+        </encoder>
+    </appender>
+    <logger name="RocketmqCommon" additivity="false">
+        <level value="${ROCKET_MQ_LEVEL}"/>
+        <appender-ref ref="RocketmqClientAppender"/>
+    </logger>
+    <logger name="RocketmqRemoting" additivity="false">
+        <level value="${ROCKET_MQ_LEVEL}"/>
+        <appender-ref ref="RocketmqClientAppender"/>
+    </logger>
+    <logger name="RocketmqClient" additivity="false">
+        <level value="${ROCKET_MQ_LEVEL}"/>
+        <appender-ref ref="RocketmqClientAppender"/>
+    </logger>
+
+
+    <!--数据同步 业务-->
+    <appender name="data_sync_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/data_sync_log.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/data_sync_log.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="data_sync_log" level="INFO">
+        <appender-ref ref="data_sync_log_file"/>
+    </logger>
+
+
+    <!-- 线程池 -->
+    <appender name="thread_pool_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/thread_pool_log.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/thread_pool_log.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="thread_pool_log" level="INFO">
+        <appender-ref ref="thread_pool_log_file"/>
+    </logger>
+
+
+    <!-- 追溯码数据处理过程 -->
+    <appender name="trace_code_dealt_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/trace_code_dealt_log.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/trace_code_dealt_log.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="trace_code_log" level="INFO">
+        <appender-ref ref="trace_code_dealt_log_file"/>
+    </logger>
+
+
+    <!-- mq 业务 日志-->
+    <appender name="mq_biz_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/mq_biz_log.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/mq_biz_log.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="mq_biz_log" level="INFO">
+        <appender-ref ref="mq_biz_log_file"/>
+    </logger>
+
+
+    <!-- 接种使用人数处理过程 -->
+    <appender name="vaccine_use_dealt_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${bySecond}/vaccine_use_dealt_log.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${REP_DIR}/vaccine_use_dealt_log.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>${maxIndex}</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>${maxFileSize}${fileSizeUnit}</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <logger name="vaccine_use_log" level="INFO">
+        <appender-ref ref="vaccine_use_dealt_log_file"/>
+    </logger>
+
+
+
+</configuration>
