@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mt.dao.AreaMapper">
+  <resultMap id="BaseResultMap" type="com.mt.entity.Area">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from jn_area
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mt.entity.Area">
+    insert into jn_area (id,parent_id, area_name, region_name,
+      version, create_time, update_time
+      )
+    values (#{id,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, #{regionName,jdbcType=VARCHAR},
+      #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.mt.entity.Area">
+    update jn_area
+    set parent_id = #{parentId,jdbcType=VARCHAR},
+      area_name = #{areaName,jdbcType=VARCHAR},
+      region_name = #{regionName,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id, parent_id, area_name, region_name, version, create_time, update_time
+    from jn_area
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, parent_id, area_name, region_name, version, create_time, update_time
+    from jn_area
+  </select>
+</mapper>

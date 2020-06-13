@@ -48,7 +48,7 @@
                              type="XMLMAPPER"/>
 
 
-        <table tableName="store"  domainObjectName="Store" enableCountByExample="false"
+        <table tableName="jn_area"  domainObjectName="Area" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false"
                enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />
