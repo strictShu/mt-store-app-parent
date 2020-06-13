@@ -81,19 +81,22 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
                     + "&Referer=" + refererUrl
                     + keyword
                     + (areaId == null ? "" : "&areaId=" + areaId);
-            if (proxy == null) {
-                //代理获取重试10次
-                for (int i = 0; i < 10; i++) {
-                    proxy = proxyRequestService.getProxy();
-                    if (proxy != null && ((String) proxy.get("ip")) != null) {
-                        break;
-                    } else {
-                        log.error("获取代理失败,次数 {}", i);
-                    }
-                }
 
-            }
+
+//            if (proxy == null) {
+//                //代理获取重试10次
+//                for (int i = 0; i < 10; i++) {
+//                    proxy = proxyRequestService.getProxy();
+//                    if (proxy != null && ((String) proxy.get("ip")) != null) {
+//                        break;
+//                    } else {
+//                        log.error("获取代理失败,次数 {}", i);
+//                    }
+//                }
+//
+//            }
             Document document = doHttpWithProxy(url);
+            //Document document = proxyRequestService.getUrlProxyContent(url);
             String jsonResult = document.text();
             boolean handleResult = handlerData(jsonResult, keyword);
             if (handleResult) {
@@ -187,6 +190,9 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
     }
 
     private Document doHttpWithProxy(String url) {
+
+        System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+
         if (proxy == null) {
             proxy = proxyRequestService.getProxy();
         }

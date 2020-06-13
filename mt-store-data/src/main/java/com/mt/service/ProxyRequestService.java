@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.Authenticator;
+import java.net.InetSocketAddress;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
 import java.util.List;
 import java.util.Map;
 
@@ -48,5 +52,54 @@ public class ProxyRequestService {
         }
         return null;
     }
+
+
+
+    // 代理隧道验证信息
+    private final static String ProxyUser = "应用id（后台-产品管理-隧道代理页面可查）";
+    private final static String ProxyPass = "应用密码（后台-产品管理-隧道代理页面可查）";
+
+    // 代理服务器
+    private final static String ProxyHost = "http-dynamic.xiaoxiangdaili.com";
+    private final static Integer ProxyPort = 10030;
+
+
+    /**
+     * 隧道代理
+     * @param url
+     * @return
+     */
+    public Document  getUrlProxyContent(String url) {
+
+        // JDK 8u111版本后，目标页面为HTTPS协议，启用proxy用户密码鉴权
+        System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+
+        Authenticator.setDefault(new Authenticator() {
+            @Override
+            public PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(ProxyUser, ProxyPass.toCharArray());
+            }
+        });
+
+        System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ProxyHost, ProxyPort));
+
+        try {
+            Document doc = Jsoup.connect(url)
+                    .timeout(3000)
+                    .proxy(proxy)
+                    .get();
+
+            if (doc != null) {
+                return doc;
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 
 }
