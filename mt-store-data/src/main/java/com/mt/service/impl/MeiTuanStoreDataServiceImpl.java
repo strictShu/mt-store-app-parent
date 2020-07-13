@@ -76,7 +76,7 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
             String url = apiUrl + cityId + "?"
                     + "uuid=" + uuid[new Random().nextInt(uuid.length)]
                     + "&userid=-1&limit=" + limit
-                    + "&offset=" + offset
+                    + "&offset=" + offset*limit
                     + "&q=" + keyword
                     + "&Referer=" + refererUrl
                     + keyword
@@ -95,18 +95,23 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
 //                }
 //
 //            }
-            Document document = doHttpWithProxy(url);
-            //Document document = proxyRequestService.getUrlProxyContent(url);
-            String jsonResult = document.text();
-            boolean handleResult = handlerData(jsonResult, keyword);
-            if (handleResult) {
-                break;
+
+            try {
+                Document document = doHttpWithProxy(url);
+                //Document document = proxyRequestService.getUrlProxyContent(url);
+                String jsonResult = document.text();
+                boolean handleResult = handlerData(jsonResult, keyword);
+                if (handleResult) {
+                    break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
     private boolean handlerData(String jsonResult, String keyword) {
-        if (StringUtils.isNotBlank(jsonResult) && jsonResult.contains("验证")) {
+        if (StringUtils.isNotBlank(jsonResult) && jsonResult.contains("验证") || StringUtils.isBlank(jsonResult)) {
             log.error("需要更换ip");
             return false;
         }
@@ -154,13 +159,18 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
         String url = apiUrl + cityId + "?"
                 + "uuid=" + uuid[new Random().nextInt(uuid.length)]
                 + "&userid=-1&limit=" + limit
-                + "&offset=" + offset
+                + "&offset=" + offset*limit
                 + "&q=" + keyword
                 + "&Referer=" + refererUrl
                 + keyword
                 + (areaId == null ? "" : "&areaId=" + areaId);
         log.info(url);
         Document document = doHttp(url);
+        if (document == null) {
+            //本地异常 尝试代理
+            return "验证";
+        }
+
         String jsonResult = document.text();
         return jsonResult;
     }
@@ -178,19 +188,38 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
         try {
             return Jsoup.connect(url)
                     .ignoreContentType(true)
-                    .proxy(null)
+                    .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+                    .header("Accept-Encoding", "identity")
+                    .header("Host", "apimobile.meituan.com")
+                    .header("Upgrade-Insecure-Requests", "1")
+                    .header("Sec-Fetch-Dest", "document")
+                    .header("Sec-Fetch-Mode", "navigate")
+                    .header("Sec-Fetch-Site", "none")
                     .userAgent(userAgent)
-                    //  .cookies(cookies)
+                    .cookies(cookies)
                     // .headers(headers)
                     .get();
         } catch (IOException e) {
-            log.error("获取数据失败", e);
-            return doHttp(url);
+           // log.error("获取数据失败", e);
+            log.error("获取数据失败,需要代理");
+            //return doHttp(url);
+            return null;
         }
     }
 
     private Document doHttpWithProxy(String url) {
 
+        // JDK 8u111版本后，目标页面为HTTPS协议，启用proxy用户密码鉴权
+
+
+        try {
+            Thread.sleep(2 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return proxyRequestService.getUrlProxyContent(url);
+       /*
         System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
 
         if (proxy == null) {
@@ -211,7 +240,7 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
         } catch (IOException e) {
             log.error("获取数据失败", e);
             return doHttpWithProxy(url);
-        }
+        }*/
     }
 
     public static void main(String[] args) throws IOException {
@@ -236,29 +265,22 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
 //        rvct=96%2C727%2C1156%2C1157%2C465%2C30
 
         Map<String, String> cookies = new HashMap<>();
-        cookies.put("_lxsdk_cuid", "1725634e713c8-06b5676eb40129-1333062-2a3000-1725634e7138");
-        cookies.put("Hm_lvt_f66b37722f586a240d4621318a5a6ebe", "1591283315");
-        cookies.put("_hc.v", "e1b8d7bb-a846-a185-83a4-bbeeb57d54da.1591283422");
-        cookies.put("iuuid", "14C2E0E37C3C59726808F58F3EF0C50A355318427C230B8BD766F22C537F15F0");
-        cookies.put("_lxsdk", "14C2E0E37C3C59726808F58F3EF0C50A355318427C230B8BD766F22C537F15F0");
-        cookies.put("webp", "1");
-        cookies.put("__utma", "74597006.727697914.1591515447.1591515447.1591515447.1");
-        cookies.put("__utmz", "=74597006.1591515447.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)");
-        cookies.put("cityname", "%E6%B5%8E%E5%8D%97");
-        cookies.put("latlng", "35.074806,118.320453,1591517019808");
-        cookies.put("i_extend", "C_b1Gimthomepagecategory1394H__a");
-        cookies.put("wm_order_channel", "mtib");
-        cookies.put("utm_source", "60030");
-        cookies.put("service-off", "0");
-        cookies.put("_lx_utm", "utm_source%3D60030");
+        // cookies.put("iuuid", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
+        // cookies.put("_hc.v", "5fbed49b-0126-b4c6-949f-d3bbbd493cdf.1590556422");
+        // cookies.put("_lxsdk_cuid", "172548cf125c8-0f4244076da799-30647d01-1aeaa0-172548cf125c8");
+        //cookies.put("_lxsdk", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
+        // cookies.put("cityname", " % E6 % B5 % 8E % E5 % 8D % 97");
+        // cookies.put("webp", "1");
+        // cookies.put("__utma", "74597006.1553331218 .1590641905 .1590641905 .1591515435 .2");
+        // cookies.put("__utmz", "74597006.1591515435.2.2.utmcsr=blog.csdn.net|utmccn=(referral)|utmcmd=referral|utmcct=/xing851483876/article/details/81842329");
+        // cookies.put("i_extend", "H__a100001__b2");
         cookies.put("ci", "96");
-        cookies.put("rvct", "96%2C727%2C1156%2C1157%2C465%2C30");
 
         Map<String, String> headers = new HashMap<String, String>();
-        headers.put("Host", "apimobile.meituan.com");
+        //  headers.put("Host", "apimobile.meituan.com");
         headers.put("Upgrade-Insecure-Requests", "1");
         MeiTuanStoreDataServiceImpl meiTuanStoreDataService = new MeiTuanStoreDataServiceImpl();
-        String url = "https://apimobile.meituan.com/group/v4/poi/pcsearch/96?uuid=b125d52020a94acd8b5c.1591507012.1.0.0&userid=-1&limit=64&offset=1&areaId=139&q=%25E9%2585%2592%25E5%25BA%2597&Referer=https://jn.meituan.com/%25E9%2585%2592%25E5%25BA%2597";
+        String url = "http://apimobile.meituan.com/group/v4/poi/pcsearch/96?uuid=cd1a9ca261144b33bc8c.1591507012.1.0.&userid=-1&limit=64&offset=2&q=%E9%85%92%E5%BA%97&Referer=https://jn.meituan.com/%E9%85%92%E5%BA%97&areaId=12466";
         String userAgent = meiTuanStoreDataService.ua[new Random().nextInt(meiTuanStoreDataService.ua.length)];
         System.out.println(userAgent);
         for (int i = 0; i < 10; i++) {
@@ -266,11 +288,16 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
                 Document document = Jsoup.connect(url)
                         .ignoreContentType(true)
                         //           .proxy("223.199.23.159",9999)
-                        // .headers(headers)
-                        //.cookies(cookies)
+                        .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+                        .header("Accept-Encoding", "identity")
+                        .header("Host", "apimobile.meituan.com")
+                        .header("Upgrade-Insecure-Requests", "1")
+                        .header("Sec-Fetch-Dest", "document")
+                        .header("Sec-Fetch-Mode", "navigate")
+                        .header("Sec-Fetch-Site", "none")
+                        .cookies(cookies)
                         .userAgent(userAgent)
-                        // .cookies()
-                        .proxy("180.113.133.90", 35633)
+                        //.proxy("180.113.133.90", 35633)
                         .get();
                 System.out.println(document.text());
             } catch (IOException e) {
@@ -284,4 +311,6 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
     public String getServiceName() {
         return "美团";
     }
+
+
 }

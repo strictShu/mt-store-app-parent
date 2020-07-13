@@ -30,7 +30,8 @@ public abstract class AbstractHandlerStore implements StoreDataService {
 
     // todo 增加uuid
     public String[] uuid = {
-            "cd1a9ca261144b33bc8c.1591507012.1.0."
+            "cd1a9ca261144b33bc8c.1591507012.1.0.0",
+            "b125d52020a94acd8b5c.1591507012.1.0.0"
     };
 
     public Map<String, String> cookies = new HashMap<>();
@@ -40,20 +41,30 @@ public abstract class AbstractHandlerStore implements StoreDataService {
 
     public void initHeader() {
 
+//        cookies.put("iuuid", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
+//        //cookies.put("Hm_lvt_f66b37722f586a240d4621318a5a6ebe", "1591283315");
+//        cookies.put("_hc.v", "5fbed49b-0126-b4c6-949f-d3bbbd493cdf.1590556422");
+//        //cookies.put("iuuid", "14C2E0E37C3C59726808F58F3EF0C50A355318427C230B8BD766F22C537F15F0");
+//        cookies.put("_lxsdk", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
+//        cookies.put("_lxsdk_cuid", "172548cf125c8-0f4244076da799-30647d01-1aeaa0-172548cf125c8");
+//        cookies.put("webp", "1");
+//        cookies.put("__utma", "74597006.1553331218.1590641905.1590641905.1591515435.2");
+//        cookies.put("__utmz", "74597006.1591515435.2.2.utmcsr=blog.csdn.net|utmccn=(referral)|utmcmd=referral|utmcct=/xing851483876/article/details/81842329");
+//        cookies.put("cityname", "%E6%B5%8E%E5%8D%97");
+//        cookies.put("latlng", "36.683988,117.057013,1591515464987");
+//        cookies.put("i_extend", "H__a100001__b2");
+//        cookies.put("rvct", "96");
 
-        cookies.put("iuuid", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
-        //cookies.put("Hm_lvt_f66b37722f586a240d4621318a5a6ebe", "1591283315");
-        cookies.put("_hc.v", "5fbed49b-0126-b4c6-949f-d3bbbd493cdf.1590556422");
-        //cookies.put("iuuid", "14C2E0E37C3C59726808F58F3EF0C50A355318427C230B8BD766F22C537F15F0");
-        cookies.put("_lxsdk", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
-        cookies.put("_lxsdk_cuid", "172548cf125c8-0f4244076da799-30647d01-1aeaa0-172548cf125c8");
-        cookies.put("webp", "1");
-        cookies.put("__utma", "74597006.1553331218.1590641905.1590641905.1591515435.2");
-        cookies.put("__utmz", "74597006.1591515435.2.2.utmcsr=blog.csdn.net|utmccn=(referral)|utmcmd=referral|utmcct=/xing851483876/article/details/81842329");
-        cookies.put("cityname", "%E6%B5%8E%E5%8D%97");
-        cookies.put("latlng", "36.683988,117.057013,1591515464987");
-        cookies.put("i_extend", "H__a100001__b2");
-        cookies.put("rvct", "96");
+        // cookies.put("iuuid", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
+        // cookies.put("_hc.v", "5fbed49b-0126-b4c6-949f-d3bbbd493cdf.1590556422");
+        // cookies.put("_lxsdk_cuid", "172548cf125c8-0f4244076da799-30647d01-1aeaa0-172548cf125c8");
+        //cookies.put("_lxsdk", "AE7EE5136792735A4355197D3109809A2827A977253525DA7E9370643E5213D6");
+        // cookies.put("cityname", " % E6 % B5 % 8E % E5 % 8D % 97");
+        // cookies.put("webp", "1");
+        // cookies.put("__utma", "74597006.1553331218 .1590641905 .1590641905 .1591515435 .2");
+        // cookies.put("__utmz", "74597006.1591515435.2.2.utmcsr=blog.csdn.net|utmccn=(referral)|utmcmd=referral|utmcct=/xing851483876/article/details/81842329");
+        // cookies.put("i_extend", "H__a100001__b2");
+        cookies.put("ci", "96");
     }
 
 
