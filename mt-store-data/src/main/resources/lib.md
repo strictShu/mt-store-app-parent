@@ -24,11 +24,24 @@ https://www.baidu.com/link?url=yZ2NV7vILyhl870r1dqVlAb7FpaXIXZVk0YysMjwaeCRbXxWe
 
 
 
-
-
 https://www.meituan.com/meishi/api/poi/getNearPoiList?offset=0&limit=10&cityId=96&lat=36.664347&lng=117.032118&Referer=https://www.meituan.com/meishi/5051778/
 
 https://www.meituan.com/meishi/api/poi/getNearPoiList?offset=0&limit=1000&cityId=96&lat=36.56914&lng=117.148572&Referer=https://www.meituan.com
+
+!cityId,确定方法:如:烟台,yt.meituan.com,
+然后搜索个关键词 如 美食 
+然后点页面的商家列表 
+看网络请求   如: https://www.meituan.com/ptapi/poi/recommend-list?poiId=52307779&cityId=104&lat=37.641441&lng=120.527975   
+cityId字段
+
+济南 96
+泰安 226
+淄博 81
+日照228
+青岛 60
+烟台 104
+
+区域id:   view-source:https://meishi.meituan.com/i/?ci=226 ci为对应的城市id 搜索areaList
 
 [
 {"id":0,"name":"全城","count":19714},

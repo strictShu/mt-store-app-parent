@@ -49,6 +49,9 @@ public class MtTask {
     @Value("#{ @environment['keyword'] ?: '外卖,美食,甜点饮品' }")
     public String key;
 
+    @Value("${cityId}")
+    private String cityId;
+
 
     //"美食","烧烤","海鲜","外卖","酒店","家常菜", "自助餐","小吃","蛋糕", "水果", "奶茶", "火锅", "面馆",
     //            "民宿", "宾馆", "洗浴", "足疗", "按摩" , "美食","酒店","保健",
@@ -70,7 +73,9 @@ public class MtTask {
 
 
     private void initAreaId() {
-        areas = areaService.queryAreaList();
+        //根据cityId
+
+        areas = areaService.queryAreaList(cityId);
     }
 
 
