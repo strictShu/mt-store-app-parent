@@ -111,7 +111,7 @@ public class ProxyRequestService {
                     .header("Sec-Fetch-Dest", "document")
                     .header("Sec-Fetch-Mode", "navigate")
                     .header("Sec-Fetch-Site", "none")
-                    .cookie("ci", "96")
+                    //.cookie("ci", "96")
                     .userAgent(userAgent)
                     .get();
 

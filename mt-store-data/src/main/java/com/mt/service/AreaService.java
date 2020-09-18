@@ -26,13 +26,17 @@ public class AreaService {
     @Autowired
     private TaAreaMapper taAreaMapper;
 
+
+    @Autowired
+    private AreaMapper areaMapper;
+
     Map map;
 
     @PostConstruct
-    public void getCityAreaList(){
+    public void getCityAreaList() {
         map = new HashMap();
-        map.put("96",jnAreaMapper);
-        map.put("226",taAreaMapper);
+        map.put("96", jnAreaMapper);
+        map.put("226", taAreaMapper);
     }
 
 
@@ -40,4 +44,13 @@ public class AreaService {
         AreaMapper areaMapper = (AreaMapper) map.get(cityId);
         return areaMapper.selectAll();
     }
+
+
+
+    public List<Area> allAreaList() {
+        return areaMapper.selectAll();
+    }
 }
+
+
+

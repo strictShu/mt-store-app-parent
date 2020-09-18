@@ -1,6 +1,7 @@
 package com.mt.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.mt.entity.Area;
 import com.mt.entity.MeiTuanData;
 import com.mt.entity.Store;
 import com.mt.service.AbstractHandlerStore;
@@ -31,11 +32,11 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
     @Value("${apiUrl}")
     private String apiUrl;
 
-    @Value("${cityId}")
-    private String cityId;
+//    @Value("${cityId}")
+//    private String cityId;
 
-    @Value("${refererUrl}")
-    private String refererUrl;
+//    @Value("${refererUrl}")
+//    private String refererUrl;
 
     @Autowired
     private StoreDaoService storeDaoService;
@@ -56,31 +57,32 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
     public void getStoreData(String keyword) {
         String jsonResult = wrapParameters(keyword, 64, 0, null);
         log.info(jsonResult);
-        handlerData(jsonResult, keyword);
+        handlerData(jsonResult, keyword,"test");
     }
 
     @Override
-    public void taskProcess(String keyword, int limit, int offset, String areaId) {
-        String jsonResult = wrapParameters(keyword, limit, offset, areaId);
+    public void taskProcess(String keyword, int limit, int offset, Area area) {
+        String jsonResult = wrapParameters(keyword, limit, offset, area);
         log.info("数据结果: {} ", jsonResult);
-        boolean handleResult = handlerData(jsonResult, keyword);
+        boolean handleResult = handlerData(jsonResult, keyword,area.getCityName());
         if (!handleResult) {
-            retryRequest(keyword, limit, offset, areaId);
+            retryRequest(keyword, limit, offset, area);
         }
     }
 
-    private void retryRequest(String keyword, int limit, int offset, String areaId) {
+    private void retryRequest(String keyword, int limit, int offset, Area area) {
+        String refererUrl = "https://" + area.getCityAcronym() + ".meituan.com/";
         // todo 重试次数超载后需要记录ip到mysql
         for (int j = 0; j < 10; j++) {
             log.info("重试获取次数 : {}", j);
-            String url = apiUrl + cityId + "?"
+            String url = apiUrl + area.getCityId() + "?"
                     + "uuid=" + uuid[new Random().nextInt(uuid.length)]
                     + "&userid=-1&limit=" + limit
-                    + "&offset=" + offset*limit
+                    + "&offset=" + offset * limit
                     + "&q=" + keyword
                     + "&Referer=" + refererUrl
                     + keyword
-                    + (areaId == null ? "" : "&areaId=" + areaId);
+                    + (area.getId() == null ? "" : "&areaId=" + area.getId());
 
 
 //            if (proxy == null) {
@@ -100,7 +102,7 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
                 Document document = doHttpWithProxy(url);
                 //Document document = proxyRequestService.getUrlProxyContent(url);
                 String jsonResult = document.text();
-                boolean handleResult = handlerData(jsonResult, keyword);
+                boolean handleResult = handlerData(jsonResult, keyword,area.getCityName());
                 if (handleResult) {
                     break;
                 }
@@ -110,7 +112,7 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
         }
     }
 
-    private boolean handlerData(String jsonResult, String keyword) {
+    private boolean handlerData(String jsonResult, String keyword,String cityName) {
         if (StringUtils.isNotBlank(jsonResult) && jsonResult.contains("验证") || StringUtils.isBlank(jsonResult)) {
             log.error("需要更换ip");
             return false;
@@ -118,19 +120,19 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
         MeiTuanData meiTuanData = JSON.parseObject(jsonResult, MeiTuanData.class);
         List<MeiTuanData.DataEntity.SearchResultEntity> searchResult = meiTuanData.getData().getSearchResult();
         searchResult.forEach(
-                searchResultEntity -> uploadData(searchResultEntity, keyword)
+                searchResultEntity -> uploadData(searchResultEntity, keyword,cityName)
         );
 
         return true;
     }
 
-    private void uploadData(MeiTuanData.DataEntity.SearchResultEntity searchResultEntity, String kerword) {
+    private void uploadData(MeiTuanData.DataEntity.SearchResultEntity searchResultEntity, String kerword,String cityName) {
         Date date = new Date();
         Store store = Store.builder()
                 .id(searchResultEntity.getId() + "")
                 .title(searchResultEntity.getTitle())
                 .phone(searchResultEntity.getPhone())
-                .city(cityId)
+                .city(cityName)
                 .address(searchResultEntity.getAddress())
                 .areaname(searchResultEntity.getAreaname())
                 .latitude(searchResultEntity.getLatitude())
@@ -155,15 +157,16 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
      * @param limit
      * @return
      */
-    public String wrapParameters(String keyword, int limit, int offset, String areaId) {
-        String url = apiUrl + cityId + "?"
+    public String wrapParameters(String keyword, int limit, int offset, Area area) {
+        String refererUrl = "https://" + area.getCityAcronym() + ".meituan.com/";
+        String url = apiUrl + area.getCityId() + "?"
                 + "uuid=" + uuid[new Random().nextInt(uuid.length)]
                 + "&userid=-1&limit=" + limit
-                + "&offset=" + offset*limit
+                + "&offset=" + offset * limit
                 + "&q=" + keyword
                 + "&Referer=" + refererUrl
                 + keyword
-                + (areaId == null ? "" : "&areaId=" + areaId);
+                + (area.getId() == null ? "" : "&areaId=" + area.getId());
         log.info(url);
         Document document = doHttp(url);
         if (document == null) {
@@ -200,7 +203,7 @@ public class MeiTuanStoreDataServiceImpl extends AbstractHandlerStore {
                     // .headers(headers)
                     .get();
         } catch (IOException e) {
-           // log.error("获取数据失败", e);
+            // log.error("获取数据失败", e);
             log.error("获取数据失败,需要代理");
             //return doHttp(url);
             return null;

@@ -3,26 +3,14 @@
 https://apimobile.meituan.com/group/v4/poi/pcsearch/96?uuid=dab4577b0f964ebea181.1591278152.1.0.0&userid=-1&limit=64&offset=192&q=%25E7%25BE%258E%25E9%25A3%259F&Referer=https://jn.meituan.com/%25E7%25BE%258E%25E9%25A3%259F
 
 
-
-
-
 https://apimobile.meituan.com/group/v4/poi/pcsearch/96?uuid=dab4577b0f964ebea181.1591278152.1.0.0&userid=-1&limit=64&offset=0&q=%25E7%25BE%258E%25E9%25A3%259F&Referer=https://jn.meituan.com/%25E7%25BE%258E%25E9%25A3%259F
-
-
-
 
 
 https://apimobile.meituan.com/group/v4/poi/pcsearch/96?uuid=92091f351a404a74bc38.1591278152.1.0.0&userid=-1&limit=64&offset=0&q=%25E7%25BE%258E%25E9%25A3%259F&areaId=139&Referer=https://jn.meituan.com/%25E7%25BE%258E%25E9%25A3%259F
 
-
-
-
-
 https://my.oschina.net/u/2331292/blog/2223508
 
 https://www.baidu.com/link?url=yZ2NV7vILyhl870r1dqVlAb7FpaXIXZVk0YysMjwaeCRbXxWeXUkI4yAsdox18RN&wd=&eqid=8aa8a5340010a71c000000045ed90d9d
-
-
 
 https://www.meituan.com/meishi/api/poi/getNearPoiList?offset=0&limit=10&cityId=96&lat=36.664347&lng=117.032118&Referer=https://www.meituan.com/meishi/5051778/
 
@@ -41,7 +29,7 @@ cityId字段
 青岛 60
 烟台 104
 
-区域id:   view-source:https://meishi.meituan.com/i/?ci=226 ci为对应的城市id 搜索areaList
+区域id:   view-source:https://meishi.meituan.com/i/?ci=96 ci为对应的城市id 搜索areaList
 
 [
 {"id":0,"name":"全城","count":19714},

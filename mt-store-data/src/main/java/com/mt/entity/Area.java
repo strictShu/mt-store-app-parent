@@ -1,14 +1,10 @@
 package com.mt.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Area {
     private String id;
 
@@ -18,10 +14,17 @@ public class Area {
 
     private String regionName;
 
+    private String cityId;
+
+    private String cityAcronym;
+
+    private String cityName;
+
     private Integer version;
 
     private Date createTime;
 
     private Date updateTime;
+
 
 }

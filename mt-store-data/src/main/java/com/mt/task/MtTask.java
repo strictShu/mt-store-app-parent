@@ -74,23 +74,24 @@ public class MtTask {
 
     private void initAreaId() {
         //根据cityId
-
-        areas = areaService.queryAreaList(cityId);
+        areas = areaService.allAreaList();
     }
 
 
     // @Scheduled(cron = "0 0 */1 * * ?")
     public void getData() {
-        keyword.forEach(keyword -> {
-            taskPloy(keyword);
-            // dataConsistenceThreadPool.submitTask(() -> taskPloy(keyword));
-        });
+
+        taskPloy();
+//        keyword.forEach(keyword -> {
+//            //taskPloy(keyword);
+//            // dataConsistenceThreadPool.submitTask(() -> taskPloy(keyword));
+//        });
     }
 
     /**
-     * @param keyword
+     * @param
      */
-    public void taskPloy(String keyword) {
+    public void taskPloy() {
         // todo
         for (Area area : areas) {
             String areaId = area.getId();
@@ -99,13 +100,15 @@ public class MtTask {
             }
             for (int i = 0; i < offset; i++) {
                 // for (Area area : areas) {
-
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                for (String s : keyword) {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    storeDataService.taskProcess(s, pageSize, i, area);
                 }
-                storeDataService.taskProcess(keyword, pageSize, i, areaId);
+
             }
         }
     }
